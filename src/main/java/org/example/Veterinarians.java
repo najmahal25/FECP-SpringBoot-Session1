@@ -1,6 +1,6 @@
 package org.example;
 
-public class Vetrinarians extends People{
+public class Veterinarians extends People{
     public void heal(){
 
     }
