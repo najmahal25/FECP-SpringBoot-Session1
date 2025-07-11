@@ -2,12 +2,58 @@ package org.example;
 
 import java.util.*;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+
 public class Main {
     public static void main(String[] args) {
 
-//        runTicketingModule(); // check first if setup is finished and Zoo is open
+        runAdminModule();
+//      runTicketingModule(); // check first if setup is finished and Zoo is open
+    }
+    // method to run Administrator module
+    private static void runAdminModule(){
+        Scanner s = new Scanner(System.in);
+        System.out.println("=== Welcome to the Zoo Admin Console ===\n");
+        System.out.println("Please log in.");
+        while(true) {
+            System.out.print("Enter username: ");
+            String username = s.next();
+            System.out.print("Enter password: ");
+            String password = s.next();
+
+            if (username.equals("admin") && password.equals("adminadmin")) {
+                System.out.println("\nLogin Successful. Welcome!");
+                break;
+            }else{
+                System.out.println("\nInvalid credentials. Please try again!");
+            }
+        }
+
+        System.out.println("====== Zoo Admin Main Menu =====");
+        System.out.println("1. Setup Zoo Staff");
+        System.out.println("2. Access Handler Module");
+        System.out.println("3. Open Zoo to Visitors");
+        System.out.println("4. Close Zoo to Visitors");
+        System.out.println("5. Exit");
+        System.out.print("Choose an option: ");
+        int choice = s.nextInt();
+
+        switch(choice){
+            case 1:
+                setupZooStaff();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+
+
+
     }
 
     // method to run ticketing module
