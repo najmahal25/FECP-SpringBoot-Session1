@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.animals.birds.Birds;
+import org.example.animals.felines.Felines;
+import org.example.animals.felines.Lion;
+import org.example.animals.pachyderms.Pachyderms;
 import org.example.people.*;
 import org.example.animals.*;
 import org.example.building.*;

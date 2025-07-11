@@ -1,5 +1,6 @@
 package org.example.building;
 
+import org.example.animals.Animal;
 import java.util.ArrayList;
 
 public abstract class Enclosures extends Building {
