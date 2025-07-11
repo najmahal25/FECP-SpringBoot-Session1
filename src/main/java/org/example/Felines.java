@@ -6,7 +6,6 @@ public class Felines extends Animal{
     Felines(boolean healthy, String name, Building location) {
         super(healthy, name);
         this.location = location;
-        location.
     }
 
     public void roam(){
