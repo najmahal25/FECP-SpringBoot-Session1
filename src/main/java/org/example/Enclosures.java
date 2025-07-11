@@ -1,4 +1,7 @@
 package org.example;
 
-public class Enclosures extends Building {
+public abstract class Enclosures extends Building {
+    public Enclosures(String buildingName) {
+        super(buildingName);
+    }
 }

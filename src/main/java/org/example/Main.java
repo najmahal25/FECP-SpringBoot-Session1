@@ -7,6 +7,25 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Zoo zoo = new Zoo();
+
+        // for demonstration purposes; adding Animals to enclosure
+        FelinesEnclosure felineEnclosure = new FelinesEnclosure("Feline Enclosure");
+        PachydermsEnclosure pachydermsEnclosure = new PachydermsEnclosure("Pachyderms Enclosure");
+        zoo.getListOfBuildings().add(felineEnclosure);
+        zoo.getListOfBuildings().add(pachydermsEnclosure);
+        BirdsEnclosure birdsEnclosure = new BirdsEnclosure("Birds Enclosure");
+        zoo.getListOfBuildings().add(birdsEnclosure);
+
+        // for demonstration purposes; adding Animals to enclosure
+        Lion simba = new Lion(true, "Simba,", felineEnclosure);
+        zoo.getListOfAnimals().add(simba);
+        felineEnclosure.listOfFelines.add(simba);
+
+        Lion mufasa = new Lion(true, "Mufasa,", felineEnclosure);
+        zoo.getListOfAnimals().add(mufasa);
+        felineEnclosure.listOfFelines.add(mufasa);
+
+
         runAdminModule(zoo);
 //      runTicketingModule(); // check first if setup is finished and Zoo is open
     }
@@ -128,7 +147,11 @@ public class Main {
         }
         System.out.println("Welcome, Handler " + handlerName + "!\n");
         System.out.println("--- Animal Duty Menu ---");
-        System.out.println("Aminals assigned to you:");
+        System.out.println("Animals assigned to you:");
+
+
+
+
 
 
 
