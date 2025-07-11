@@ -6,12 +6,12 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-
-        runAdminModule();
+        Zoo zoo = new Zoo();
+        runAdminModule(zoo);
 //      runTicketingModule(); // check first if setup is finished and Zoo is open
     }
     // method to run Administrator module
-    private static void runAdminModule(){
+    private static void runAdminModule(Zoo zoo){
         Scanner s = new Scanner(System.in);
         System.out.println("=== Welcome to the Zoo Admin Console ===\n");
         System.out.println("Please log in.");
@@ -40,7 +40,7 @@ public class Main {
 
         switch(choice){
             case 1:
-                setupZooStaff();
+                setupZooStaff(s, zoo);
                 break;
             case 2:
                 break;
@@ -56,6 +56,48 @@ public class Main {
 
     }
 
+    private static void setupZooStaff(Scanner scanner, Zoo zoo) {
+
+        System.out.println("--- Zoo Setup ---");
+
+        System.out.print("\nEnter your name, Manager: ");
+        scanner.nextLine(); //consumes leftover newline character
+        String managerName = scanner.nextLine();
+
+        System.out.print("\nEnter Veteinarian's name: ");
+        String veterinarianName = scanner.nextLine();
+
+        System.out.print("\nEnter Handler for Pachyderm Enclosure: ");
+        String pachydermHandlerName = scanner.nextLine();
+
+        System.out.print("\nEnter Handler for Feline Enclosure: ");
+        String felineHandlerName = scanner.nextLine();
+
+        System.out.print("\nEnter Handler for Bird Enclosure: ");
+        String birdHandlerName = scanner.nextLine();
+
+        System.out.print("\nEnter Vendor for Ticket Shop: ");
+        String ticketShopVendorName = scanner.nextLine();
+
+        System.out.print("\nEnter Vendor for Shop: ");
+        String shopVendorName = scanner.nextLine();
+
+        ArrayList<People> zooStaffs = zoo.getListOfPeople();
+        zooStaffs.add(new Managers(managerName));
+        zooStaffs.add(new Veterinarians(veterinarianName));
+        zooStaffs.add(new Handlers(pachydermHandlerName));
+        zooStaffs.add(new Handlers(felineHandlerName));
+        zooStaffs.add(new Handlers(birdHandlerName));
+        zooStaffs.add(new Vendors(ticketShopVendorName));
+        zooStaffs.add(new Vendors(shopVendorName));
+
+        System.out.println("\nZoo staff setup complete.");
+
+
+
+
+
+    }
     // method to run ticketing module
     private static void runTicketingModule() {
         System.out.println("=== 🎟️WELCOME TO THE ZOO TICKET SHOP ===");
