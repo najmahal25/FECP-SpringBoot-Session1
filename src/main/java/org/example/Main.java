@@ -3,6 +3,7 @@ package org.example;
 import org.example.people.*;
 import org.example.animals.*;
 import org.example.building.*;
+import org.example.utils.TicketHelpers;
 import org.example.building.enclosures.*;
 
 import java.util.*;
@@ -39,6 +40,7 @@ public class Main {
         runAdminModule(zoo);
 //        runTicketingModule(); // check first if setup is finished and Zoo is open
     }
+
     // method to run Administrator module
     private static void runAdminModule(Zoo zoo) {
         Scanner s = new Scanner(System.in);
@@ -61,8 +63,9 @@ public class Main {
         }
 
         boolean runLoop = true;
+        int choice = 0;
 
-        while (runLoop) {
+        while (choice != 5) {
             System.out.println("====== Zoo Admin Main Menu =====");
             System.out.println("1. Setup Zoo Staff");
             System.out.println("2. Access Handler Module");
@@ -70,7 +73,7 @@ public class Main {
             System.out.println("4. Close Zoo to Visitors");
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
-            int choice = s.nextInt();
+            choice = s.nextInt();
 
             switch(choice){
                 case 1:
@@ -83,7 +86,6 @@ public class Main {
                 case 4:
                     break;
                 case 5:
-                    runLoop = false;
                     System.out.println("Goodbye!");
                     break;
                 default:
@@ -95,25 +97,27 @@ public class Main {
 
     // method to run ticketing module
     private static void runTicketingModule() {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("=== 🎟️WELCOME TO THE ZOO TICKET SHOP ===");
         System.out.println("\n Here's what you can experience in the zoo:");
         System.out.println("- Visit Animal Enclosures (Elephant, Lion, Owl)");
         System.out.println("- Buy snacks and drinks from our Shops");
         System.out.println("- Listen to science lectures at the Hospital");
         System.out.println("- Buy fun gifts at our Gift Shop");
-
-        Scanner scanner = new Scanner(System.in);
         System.out.print("\nWould you like to buy a ticket? (yes/no): ");
         String willBuyTicket = scanner.next();
 
         if (willBuyTicket.equalsIgnoreCase("yes")) {
             System.out.print("\nEnter your name: ");
             String name = scanner.next();
+
             System.out.print("Enter your age: ");
             int age = scanner.nextInt();
 
-            String type = computeTicketType(age); // compute for ticket type based on age
-            double price = computeTicketPrice(age); // compute for ticket price based on age
+            String type = TicketHelpers.computeTicketType(age); // compute for ticket type based on age
+            double price = TicketHelpers.computeTicketPrice(age); // compute for ticket price based on age
+
             System.out.println("\nYou qualify for a " + type + " ticket.");
             System.out.printf("Ticket Price: ₱%.2f", price);
 
@@ -143,7 +147,7 @@ public class Main {
 
         while (true) {
             System.out.println("Enter your name (Handler): ");
-            handlerName = scanner.nextLine();
+            handlerName = scanner.next();
 
             if (zoo.getListOfPeople().toString().contains(handlerName)) {
                 break;
@@ -159,7 +163,6 @@ public class Main {
 
     // helper method for setting up Zoo Staff
     private static void setupZooStaff(Scanner scanner, Zoo zoo) {
-
         System.out.println("--- Zoo Setup ---");
 
         System.out.print("\nEnter your name, Manager: ");
@@ -184,41 +187,16 @@ public class Main {
         System.out.print("\nEnter Vendor for Shop: ");
         String shopVendorName = scanner.nextLine();
 
-        ArrayList<People> zooStaffs = zoo.getListOfPeople();
-        zooStaffs.add(new Managers(managerName));
-        zooStaffs.add(new Veterinarians(veterinarianName));
-        zooStaffs.add(new Handlers(pachydermHandlerName));
-        zooStaffs.add(new Handlers(felineHandlerName));
-        zooStaffs.add(new Handlers(birdHandlerName));
-        zooStaffs.add(new Vendors(ticketShopVendorName));
-        zooStaffs.add(new Vendors(shopVendorName));
+        ArrayList<People> newZooStaff = zoo.getListOfPeople();
+        newZooStaff.add(new Managers(managerName));
+        newZooStaff.add(new Veterinarians(veterinarianName));
+        newZooStaff.add(new Handlers(pachydermHandlerName));
+        newZooStaff.add(new Handlers(felineHandlerName));
+        newZooStaff.add(new Handlers(birdHandlerName));
+        newZooStaff.add(new Vendors(ticketShopVendorName));
+        newZooStaff.add(new Vendors(shopVendorName));
+        zoo.setListOfPeople(newZooStaff);
 
         System.out.println("\nZoo staff setup complete.");
-    }
-
-    // helper method which returns ticket type based on age
-    private static String computeTicketType(int age) {
-        if (age <= 5) {
-            return "CHILD";
-        } else if (age <= 17) {
-            return "STUDENT";
-        } else if (age <= 59) {
-            return "ADULT";
-        } else {
-            return "SENIOR";
-        }
-    }
-
-    // helper method which returns ticket price based on age
-    private static double computeTicketPrice(int age) {
-        if (age <= 5) {
-            return 0.0;
-        } else if (age <= 17) {
-            return 75.0;
-        } else if (age <= 59) {
-            return 150.0;
-        } else {
-            return 50.0;
-        }
     }
 }
