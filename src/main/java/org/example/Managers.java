@@ -1,6 +1,10 @@
 package org.example;
 
 public class Managers extends People{
+    public Managers(String managerName) {
+        super(managerName);
+    }
+
     public void closeZoo(){
 
     }
