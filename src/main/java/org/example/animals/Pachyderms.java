@@ -1,4 +1,6 @@
-package org.example;
+package org.example.animals;
+
+import org.example.building.Building;
 
 public class Pachyderms extends Animal {
 

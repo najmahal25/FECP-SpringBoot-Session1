@@ -1,4 +1,4 @@
-package org.example;
+package org.example.animals;
 
 public abstract class Animal {
     private boolean healthy;

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.building;
 
 public class Ticket {
     private String name;

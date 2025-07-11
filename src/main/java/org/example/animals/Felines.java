@@ -1,4 +1,6 @@
-package org.example;
+package org.example.animals;
+
+import org.example.building.Building;
 
 public class Felines extends Animal{
     private Building location;
@@ -6,7 +8,6 @@ public class Felines extends Animal{
     Felines(boolean healthy, String name, Building location) {
         super(healthy, name);
         this.location = location;
-        location.
     }
 
     public void roam(){

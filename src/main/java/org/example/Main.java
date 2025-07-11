@@ -1,8 +1,11 @@
 package org.example;
 
+import org.example.people.*;
+import org.example.animals.*;
+import org.example.building.*;
+import org.example.building.enclosures.*;
+
 import java.util.*;
-
-
 
 public class Main {
     public static void main(String[] args) {
@@ -11,81 +14,84 @@ public class Main {
         // for demonstration purposes; adding Animals to enclosure
         FelinesEnclosure felineEnclosure = new FelinesEnclosure("Feline Enclosure");
         PachydermsEnclosure pachydermsEnclosure = new PachydermsEnclosure("Pachyderms Enclosure");
-        zoo.getListOfBuildings().add(felineEnclosure);
-        zoo.getListOfBuildings().add(pachydermsEnclosure);
         BirdsEnclosure birdsEnclosure = new BirdsEnclosure("Birds Enclosure");
-        zoo.getListOfBuildings().add(birdsEnclosure);
+
+        ArrayList<Building> newListOfBuildings = zoo.getListOfBuildings();
+        newListOfBuildings.add(felineEnclosure);
+        newListOfBuildings.add(pachydermsEnclosure);
+        newListOfBuildings.add(birdsEnclosure);
+        zoo.setListOfBuildings(newListOfBuildings);
 
         // for demonstration purposes; adding Animals to enclosure
         Lion simba = new Lion(true, "Simba,", felineEnclosure);
-        zoo.getListOfAnimals().add(simba);
-        felineEnclosure.listOfFelines.add(simba);
-
         Lion mufasa = new Lion(true, "Mufasa,", felineEnclosure);
-        zoo.getListOfAnimals().add(mufasa);
-        felineEnclosure.listOfFelines.add(mufasa);
 
+        ArrayList<Animal> newListOfAnimals = zoo.getListOfAnimals();
+        newListOfAnimals.add(simba);
+        newListOfAnimals.add(mufasa);
+        zoo.setListOfAnimals(newListOfAnimals);
+
+        ArrayList<Felines> newFelineEnclosure = felineEnclosure.getListOfFelines();
+        newFelineEnclosure.add(simba);
+        newFelineEnclosure.add(mufasa);
+        felineEnclosure.setListOfFelines(newFelineEnclosure);
 
         runAdminModule(zoo);
-//      runTicketingModule(); // check first if setup is finished and Zoo is open
+//        runTicketingModule(); // check first if setup is finished and Zoo is open
     }
     // method to run Administrator module
-    private static void runAdminModule(Zoo zoo){
+    private static void runAdminModule(Zoo zoo) {
         Scanner s = new Scanner(System.in);
         System.out.println("=== Welcome to the Zoo Admin Console ===\n");
         System.out.println("Please log in.");
-        while(true) {
+
+        while (true) {
             System.out.print("Enter username: ");
             String username = s.next();
+
             System.out.print("Enter password: ");
             String password = s.next();
 
             if (username.equals("admin") && password.equals("adminadmin")) {
                 System.out.println("\nLogin Successful. Welcome!");
                 break;
-            }else{
+            } else {
                 System.out.println("\nInvalid credentials. Please try again!");
             }
         }
+
         boolean runLoop = true;
 
-        while(runLoop){
-        System.out.println("====== Zoo Admin Main Menu =====");
-        System.out.println("1. Setup Zoo Staff");
-        System.out.println("2. Access Handler Module");
-        System.out.println("3. Open Zoo to Visitors");
-        System.out.println("4. Close Zoo to Visitors");
-        System.out.println("5. Exit");
-        System.out.print("Choose an option: ");
-        int choice = s.nextInt();
+        while (runLoop) {
+            System.out.println("====== Zoo Admin Main Menu =====");
+            System.out.println("1. Setup Zoo Staff");
+            System.out.println("2. Access Handler Module");
+            System.out.println("3. Open Zoo to Visitors");
+            System.out.println("4. Close Zoo to Visitors");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            int choice = s.nextInt();
 
-        switch(choice){
-            case 1:
-                setupZooStaff(s, zoo);
-                break;
-            case 2:
-                accessHandlerModule(s, zoo);
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                runLoop = false;
-                System.out.println("Goodbye!");
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
-                break;
-
+            switch(choice){
+                case 1:
+                    setupZooStaff(s, zoo);
+                    break;
+                case 2:
+                    accessHandlerModule(s, zoo);
+                    break;
+                case 3:
+                case 4:
+                    break;
+                case 5:
+                    runLoop = false;
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
         }
-        }
-
-
-
     }
-
-
 
     // method to run ticketing module
     private static void runTicketingModule() {
@@ -131,31 +137,24 @@ public class Main {
         }
     }
 
-
     // helper method for accessing handler module
     private static void accessHandlerModule(Scanner scanner, Zoo zoo){
         String handlerName = "";
-        while(true){
+
+        while (true) {
             System.out.println("Enter your name (Handler): ");
             handlerName = scanner.nextLine();
 
-            if(zoo.getListOfPeople().toString().contains(handlerName)){
+            if (zoo.getListOfPeople().toString().contains(handlerName)) {
                 break;
-            }else{
-                    System.out.println(handlerName + " is not a handler.");
-                }
+            } else {
+                System.out.println(handlerName + " is not a handler.");
+            }
         }
+
         System.out.println("Welcome, Handler " + handlerName + "!\n");
         System.out.println("--- Animal Duty Menu ---");
         System.out.println("Animals assigned to you:");
-
-
-
-
-
-
-
-
     }
 
     // helper method for setting up Zoo Staff
@@ -195,11 +194,6 @@ public class Main {
         zooStaffs.add(new Vendors(shopVendorName));
 
         System.out.println("\nZoo staff setup complete.");
-
-
-
-
-
     }
 
     // helper method which returns ticket type based on age

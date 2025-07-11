@@ -1,7 +1,7 @@
-package org.example;
+package org.example.people;
 
 public class Handlers extends People{
-    Handlers(String handlerName){
+    public Handlers(String handlerName){
         super(handlerName);
     }
     public void feed(){
