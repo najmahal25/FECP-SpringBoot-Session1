@@ -1,7 +1,8 @@
 package org.example;
 
 import java.util.*;
-
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -19,11 +20,11 @@ public class Main {
         // for demonstration purposes; adding Animals to enclosure
         Lion simba = new Lion(true, "Simba,", felineEnclosure);
         zoo.getListOfAnimals().add(simba);
-        felineEnclosure.listOfFelines.add(simba);
+        felineEnclosure.getListOfFelines().add(simba);
 
         Lion mufasa = new Lion(true, "Mufasa,", felineEnclosure);
         zoo.getListOfAnimals().add(mufasa);
-        felineEnclosure.listOfFelines.add(mufasa);
+        felineEnclosure.getListOfFelines().add(mufasa);
 
 
         runAdminModule(zoo);
@@ -134,28 +135,110 @@ public class Main {
 
     // helper method for accessing handler module
     private static void accessHandlerModule(Scanner scanner, Zoo zoo){
-        String handlerName = "";
-        while(true){
-            System.out.println("Enter your name (Handler): ");
-            handlerName = scanner.nextLine();
+        List<Handlers> handlers = zoo.getListOfPeople().stream()
+                .filter(handler -> handler instanceof Handlers)
+                .map(handler -> (Handlers) handler)
+                .toList();
+        System.out.println(handlers.toString());
+        if(handlers.isEmpty()){
+            System.out.println("No Handlers yet.");
+        }else{
+            scanner.nextLine(); // removes
+            while(true){
+                System.out.print("Enter your name (Handler): ");
 
-            if(zoo.getListOfPeople().toString().contains(handlerName)){
-                break;
-            }else{
+                String handlerName = scanner.nextLine();
+
+
+
+                if(handlers.toString().contains(handlerName)){
+                    Handlers handler = handlers.stream()
+                            .filter(person -> person.getName().equals(handlerName))
+                            .findFirst()
+                            .orElse(null);
+                    if (handler == null) {
+                        System.out.println(handlerName + " is not a handler.");
+                    }else {
+                        System.out.println("Welcome, Handler " + handler.getName() + "!\n");
+                        System.out.println("--- Animal Duty Menu ---");
+                        System.out.println("Animals assigned to you:");
+                        Enclosures location = handler.getLocation();
+                        int animalSelected;
+
+                        switch (location) {
+                            case PachydermsEnclosure pachydermsEnclosure:
+                                ArrayList<Pachyderms> pachydermsList = pachydermsEnclosure.getListOfPachyderms();
+                                for (int i = 0; i < pachydermsList.size(); i++) {
+                                    System.out.printf("%d. %s\n", i, pachydermsList.get(i).getName());
+                                }
+                                while(true){
+                                System.out.println("Choose Animal to interact with (0 to exit): ");
+                                animalSelected = scanner.nextInt();
+
+                                    if(animalSelected > pachydermsList.size() || animalSelected < 0){
+                                        System.out.println("Invalid choice. Please try again.");
+
+                                    } else if (animalSelected == 0) {
+                                        break;
+                                    } else {
+                                        Pachyderms pachydermSelected = pachydermsList.get(animalSelected);
+                                        System.out.println("Choose Action");
+                                        System.out.println("1. Feed " + pachydermSelected.getName());
+                                        System.out.println("2. Exercise + " + pachydermSelected.getName());
+                                        System.out.println("3. Examine Mufasa to Vet");
+                                        int choice = scanner.nextInt();
+
+                                        switch (choice) {
+                                            case 1:
+                                                pachydermSelected.eat();
+                                                break;
+                                            case 2:
+                                                pachydermSelected.roam();
+                                                break;
+
+                                            case 3:
+                                                pachydermSelected.
+                                                break;
+                                            default:
+                                                System.out.println("invalid input.");
+                                                break;
+                                        }
+                                    }
+                                }
+
+
+                                break;
+                            case FelinesEnclosure felinesEnclosure:
+                                ArrayList<Felines> felinesList = felinesEnclosure.getListOfFelines();
+                                for (int i = 0; i < felinesList.size(); i++) {
+                                    System.out.printf("%d. %s", i, felinesList.get(i).getName());
+                                }
+                                System.out.println("Choose Animal to interact with (0 to exit): ");
+                                animalSelected = scanner.nextInt();
+                                break;
+                            case BirdsEnclosure birdsEnclosure:
+                                ArrayList<Birds> birdsList = birdsEnclosure.getListOfBirds();
+                                for (int i = 0; i < birdsList.size(); i++) {
+                                    System.out.printf("%d. %s", i, birdsList.get(i).getName());
+                                }
+                                System.out.println("Choose Animal to interact with (0 to exit): ");
+                                animalSelected = scanner.nextInt();
+                                break;
+                            case null:
+                            default:
+                                System.out.println("Handler not in Enclosure.");
+                                break;
+                        }
+
+
+
+                    }
+
+                }else{
                     System.out.println(handlerName + " is not a handler.");
                 }
+            }
         }
-        System.out.println("Welcome, Handler " + handlerName + "!\n");
-        System.out.println("--- Animal Duty Menu ---");
-        System.out.println("Animals assigned to you:");
-
-
-
-
-
-
-
-
     }
 
     // helper method for setting up Zoo Staff
@@ -188,18 +271,23 @@ public class Main {
         ArrayList<People> zooStaffs = zoo.getListOfPeople();
         zooStaffs.add(new Managers(managerName));
         zooStaffs.add(new Veterinarians(veterinarianName));
-        zooStaffs.add(new Handlers(pachydermHandlerName));
-        zooStaffs.add(new Handlers(felineHandlerName));
-        zooStaffs.add(new Handlers(birdHandlerName));
+        zooStaffs.add(new Handlers(pachydermHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), PachydermsEnclosure.class)));
+        zooStaffs.add(new Handlers(felineHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), FelinesEnclosure.class)));
+        zooStaffs.add(new Handlers(birdHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), BirdsEnclosure.class)));
         zooStaffs.add(new Vendors(ticketShopVendorName));
         zooStaffs.add(new Vendors(shopVendorName));
 
         System.out.println("\nZoo staff setup complete.");
 
-
-
-
-
+    }
+    // helper method for getting differing enclosures
+    public static Building getBuildingByClass(ArrayList<Building> buildings, Class<?> clazz) {
+        for (Building building : buildings) {
+            if (clazz.isInstance(building)) {
+                return building;
+            }
+        }
+        return null; // Or throw an exception if the building is not found
     }
 
     // helper method which returns ticket type based on age

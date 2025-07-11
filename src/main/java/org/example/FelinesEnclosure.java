@@ -3,7 +3,7 @@ package org.example;
 import java.util.ArrayList;
 
 public class FelinesEnclosure extends Enclosures{
-    ArrayList<Felines> listOfFelines = new ArrayList<>();
+    private ArrayList<Felines> listOfFelines = new ArrayList<>();
 
     FelinesEnclosure(String buildingName){
         super(buildingName);

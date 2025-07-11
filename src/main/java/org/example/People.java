@@ -8,12 +8,9 @@ public abstract class People {
         this.name = name;
     }
 
+
     public void goTo(Building destination){
-
-    }
-
-    public String toString(){
-        return name;
+        this.location = destination;
     }
 
     public String getName() {
