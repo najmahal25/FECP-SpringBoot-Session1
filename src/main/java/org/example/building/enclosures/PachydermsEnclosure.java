@@ -1,4 +1,7 @@
-package org.example;
+package org.example.building.enclosures;
+
+import org.example.animals.Pachyderms;
+import org.example.building.Enclosures;
 
 import java.util.ArrayList;
 

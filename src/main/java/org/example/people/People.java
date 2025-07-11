@@ -1,4 +1,6 @@
-package org.example;
+package org.example.people;
+
+import org.example.building.Building;
 
 public abstract class People {
     private String name;

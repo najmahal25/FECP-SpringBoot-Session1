@@ -1,7 +1,7 @@
-package org.example;
+package org.example.people;
 
 public class Vendors extends People {
-    Vendors(String vendorName){
+    public Vendors(String vendorName){
         super(vendorName);
     }
     public void sell(){

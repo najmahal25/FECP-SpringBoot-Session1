@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.animals.Animal;
+import org.example.building.Building;
+import org.example.people.People;
+
 import java.util.ArrayList;
 
 public class Zoo {

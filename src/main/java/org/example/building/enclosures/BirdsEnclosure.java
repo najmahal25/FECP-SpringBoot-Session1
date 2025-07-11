@@ -1,8 +1,11 @@
-package org.example;
+package org.example.building.enclosures;
+
+import org.example.animals.Birds;
+import org.example.building.Enclosures;
 
 import java.util.ArrayList;
 
-public class BirdsEnclosure extends Enclosures{
+public class BirdsEnclosure extends Enclosures {
 
     private ArrayList<Birds> listOfBirds = new ArrayList<>();
 

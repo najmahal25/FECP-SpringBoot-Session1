@@ -1,9 +1,12 @@
 package org.example;
 
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import org.example.people.*;
+import org.example.animals.*;
+import org.example.building.*;
+import org.example.utils.TicketHelpers;
+import org.example.building.enclosures.*;
 
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,103 +15,109 @@ public class Main {
         // for demonstration purposes; adding Animals to enclosure
         FelinesEnclosure felineEnclosure = new FelinesEnclosure("Feline Enclosure");
         PachydermsEnclosure pachydermsEnclosure = new PachydermsEnclosure("Pachyderms Enclosure");
-        zoo.getListOfBuildings().add(felineEnclosure);
-        zoo.getListOfBuildings().add(pachydermsEnclosure);
         BirdsEnclosure birdsEnclosure = new BirdsEnclosure("Birds Enclosure");
-        zoo.getListOfBuildings().add(birdsEnclosure);
+
+        ArrayList<Building> newListOfBuildings = zoo.getListOfBuildings();
+        newListOfBuildings.add(felineEnclosure);
+        newListOfBuildings.add(pachydermsEnclosure);
+        newListOfBuildings.add(birdsEnclosure);
+        zoo.setListOfBuildings(newListOfBuildings);
 
         // for demonstration purposes; adding Animals to enclosure
         Lion simba = new Lion(true, "Simba,", felineEnclosure);
-        zoo.getListOfAnimals().add(simba);
-        felineEnclosure.getListOfFelines().add(simba);
-
         Lion mufasa = new Lion(true, "Mufasa,", felineEnclosure);
-        zoo.getListOfAnimals().add(mufasa);
-        felineEnclosure.getListOfFelines().add(mufasa);
 
+        ArrayList<Animal> newListOfAnimals = zoo.getListOfAnimals();
+        newListOfAnimals.add(simba);
+        newListOfAnimals.add(mufasa);
+        zoo.setListOfAnimals(newListOfAnimals);
+
+        ArrayList<Felines> newFelineEnclosure = felineEnclosure.getListOfFelines();
+        newFelineEnclosure.add(simba);
+        newFelineEnclosure.add(mufasa);
+        felineEnclosure.setListOfFelines(newFelineEnclosure);
 
         runAdminModule(zoo);
-//      runTicketingModule(); // check first if setup is finished and Zoo is open
+//        runTicketingModule(); // check first if setup is finished and Zoo is open
     }
+
     // method to run Administrator module
-    private static void runAdminModule(Zoo zoo){
+    private static void runAdminModule(Zoo zoo) {
         Scanner s = new Scanner(System.in);
         System.out.println("=== Welcome to the Zoo Admin Console ===\n");
         System.out.println("Please log in.");
-        while(true) {
+
+        while (true) {
             System.out.print("Enter username: ");
             String username = s.next();
+
             System.out.print("Enter password: ");
             String password = s.next();
 
             if (username.equals("admin") && password.equals("adminadmin")) {
                 System.out.println("\nLogin Successful. Welcome!");
                 break;
-            }else{
+            } else {
                 System.out.println("\nInvalid credentials. Please try again!");
             }
         }
+
         boolean runLoop = true;
+        int choice = 0;
 
-        while(runLoop){
-        System.out.println("====== Zoo Admin Main Menu =====");
-        System.out.println("1. Setup Zoo Staff");
-        System.out.println("2. Access Handler Module");
-        System.out.println("3. Open Zoo to Visitors");
-        System.out.println("4. Close Zoo to Visitors");
-        System.out.println("5. Exit");
-        System.out.print("Choose an option: ");
-        int choice = s.nextInt();
+        while (choice != 5) {
+            System.out.println("====== Zoo Admin Main Menu =====");
+            System.out.println("1. Setup Zoo Staff");
+            System.out.println("2. Access Handler Module");
+            System.out.println("3. Open Zoo to Visitors");
+            System.out.println("4. Close Zoo to Visitors");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            choice = s.nextInt();
 
-        switch(choice){
-            case 1:
-                setupZooStaff(s, zoo);
-                break;
-            case 2:
-                accessHandlerModule(s, zoo);
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                runLoop = false;
-                System.out.println("Goodbye!");
-                break;
-            default:
-                System.out.println("Invalid choice. Please try again.");
-                break;
-
+            switch(choice){
+                case 1:
+                    setupZooStaff(s, zoo);
+                    break;
+                case 2:
+                    accessHandlerModule(s, zoo);
+                    break;
+                case 3:
+                case 4:
+                    break;
+                case 5:
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
         }
-        }
-
-
-
     }
-
-
 
     // method to run ticketing module
     private static void runTicketingModule() {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("=== 🎟️WELCOME TO THE ZOO TICKET SHOP ===");
         System.out.println("\n Here's what you can experience in the zoo:");
         System.out.println("- Visit Animal Enclosures (Elephant, Lion, Owl)");
         System.out.println("- Buy snacks and drinks from our Shops");
         System.out.println("- Listen to science lectures at the Hospital");
         System.out.println("- Buy fun gifts at our Gift Shop");
-
-        Scanner scanner = new Scanner(System.in);
         System.out.print("\nWould you like to buy a ticket? (yes/no): ");
         String willBuyTicket = scanner.next();
 
         if (willBuyTicket.equalsIgnoreCase("yes")) {
             System.out.print("\nEnter your name: ");
             String name = scanner.next();
+
             System.out.print("Enter your age: ");
             int age = scanner.nextInt();
 
-            String type = computeTicketType(age); // compute for ticket type based on age
-            double price = computeTicketPrice(age); // compute for ticket price based on age
+            String type = TicketHelpers.computeTicketType(age); // compute for ticket type based on age
+            double price = TicketHelpers.computeTicketPrice(age); // compute for ticket price based on age
+
             System.out.println("\nYou qualify for a " + type + " ticket.");
             System.out.printf("Ticket Price: ₱%.2f", price);
 
@@ -195,9 +204,8 @@ public class Main {
                                             case 2:
                                                 pachydermSelected.roam();
                                                 break;
-
                                             case 3:
-                                                pachydermSelected.
+//                                                pachydermSelected.ex();
                                                 break;
                                             default:
                                                 System.out.println("invalid input.");
@@ -243,7 +251,6 @@ public class Main {
 
     // helper method for setting up Zoo Staff
     private static void setupZooStaff(Scanner scanner, Zoo zoo) {
-
         System.out.println("--- Zoo Setup ---");
 
         System.out.print("\nEnter your name, Manager: ");
@@ -268,14 +275,15 @@ public class Main {
         System.out.print("\nEnter Vendor for Shop: ");
         String shopVendorName = scanner.nextLine();
 
-        ArrayList<People> zooStaffs = zoo.getListOfPeople();
-        zooStaffs.add(new Managers(managerName));
-        zooStaffs.add(new Veterinarians(veterinarianName));
-        zooStaffs.add(new Handlers(pachydermHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), PachydermsEnclosure.class)));
-        zooStaffs.add(new Handlers(felineHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), FelinesEnclosure.class)));
-        zooStaffs.add(new Handlers(birdHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), BirdsEnclosure.class)));
-        zooStaffs.add(new Vendors(ticketShopVendorName));
-        zooStaffs.add(new Vendors(shopVendorName));
+        ArrayList<People> newZooStaff = zoo.getListOfPeople();
+        newZooStaff.add(new Managers(managerName));
+        newZooStaff.add(new Veterinarians(veterinarianName));
+        newZooStaff.add(new Handlers(pachydermHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), PachydermsEnclosure.class)));
+        newZooStaff.add(new Handlers(felineHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), FelinesEnclosure.class)));
+        newZooStaff.add(new Handlers(birdHandlerName, (Enclosures) getBuildingByClass(zoo.getListOfBuildings(), BirdsEnclosure.class)));
+        newZooStaff.add(new Vendors(ticketShopVendorName));
+        newZooStaff.add(new Vendors(shopVendorName));
+        zoo.setListOfPeople(newZooStaff);
 
         System.out.println("\nZoo staff setup complete.");
 
@@ -288,31 +296,5 @@ public class Main {
             }
         }
         return null; // Or throw an exception if the building is not found
-    }
-
-    // helper method which returns ticket type based on age
-    private static String computeTicketType(int age) {
-        if (age <= 5) {
-            return "CHILD";
-        } else if (age <= 17) {
-            return "STUDENT";
-        } else if (age <= 59) {
-            return "ADULT";
-        } else {
-            return "SENIOR";
-        }
-    }
-
-    // helper method which returns ticket price based on age
-    private static double computeTicketPrice(int age) {
-        if (age <= 5) {
-            return 0.0;
-        } else if (age <= 17) {
-            return 75.0;
-        } else if (age <= 59) {
-            return 150.0;
-        } else {
-            return 50.0;
-        }
     }
 }

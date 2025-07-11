@@ -1,7 +1,6 @@
-package org.example;
+package org.example.building;
 
-public class Shops extends Building{
-
+public class Shops extends Building {
     public Shops(String buildingName) {
         super(buildingName);
     }

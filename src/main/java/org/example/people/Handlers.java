@@ -1,9 +1,11 @@
-package org.example;
+package org.example.people;
+
+import org.example.building.Enclosures;
 
 public class Handlers extends People{
     private Enclosures location;
 
-    Handlers(String handlerName, Enclosures location){
+    public Handlers(String handlerName, Enclosures location){
         super(handlerName);
         this.location = location;
 

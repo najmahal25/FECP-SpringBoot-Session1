@@ -1,11 +1,14 @@
-package org.example;
+package org.example.building.enclosures;
+
+import org.example.animals.Felines;
+import org.example.building.Enclosures;
 
 import java.util.ArrayList;
 
 public class FelinesEnclosure extends Enclosures{
     private ArrayList<Felines> listOfFelines = new ArrayList<>();
 
-    FelinesEnclosure(String buildingName){
+    public FelinesEnclosure(String buildingName){
         super(buildingName);
     }
 
