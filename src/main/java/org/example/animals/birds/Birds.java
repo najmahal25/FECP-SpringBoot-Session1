@@ -1,11 +1,12 @@
-package org.example.animals;
+package org.example.animals.birds;
 
+import org.example.animals.Animal;
 import org.example.building.Building;
 
-public class Felines extends Animal{
+public class Birds extends Animal {
     private Building location;
 
-    Felines(boolean healthy, String name, Building location) {
+    Birds(boolean healthy, String name, Building location){
         super(healthy, name);
         this.location = location;
     }

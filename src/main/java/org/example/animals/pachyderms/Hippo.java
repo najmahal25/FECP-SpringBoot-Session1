@@ -1,4 +1,4 @@
-package org.example.animals;
+package org.example.animals.pachyderms;
 
 import org.example.building.Building;
 

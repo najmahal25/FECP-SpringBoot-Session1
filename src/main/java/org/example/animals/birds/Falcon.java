@@ -1,4 +1,4 @@
-package org.example.animals;
+package org.example.animals.birds;
 
 import org.example.building.Building;
 

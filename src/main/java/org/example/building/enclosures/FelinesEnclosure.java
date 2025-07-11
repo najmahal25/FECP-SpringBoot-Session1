@@ -1,6 +1,6 @@
 package org.example.building.enclosures;
 
-import org.example.animals.Felines;
+import org.example.animals.felines.Felines;
 import org.example.building.Enclosures;
 
 import java.util.ArrayList;
