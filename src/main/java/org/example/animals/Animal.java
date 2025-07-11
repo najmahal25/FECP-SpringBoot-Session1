@@ -10,7 +10,7 @@ public abstract class Animal {
     }
 
     public void eat(){
-
+        System.out.println(this.name + " loves the food!");
     }
 
     public void sleep(){

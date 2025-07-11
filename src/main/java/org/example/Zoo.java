@@ -43,4 +43,15 @@ public class Zoo {
     public void setListOfBuildings(ArrayList<Building> listOfBuildings) {
         this.listOfBuildings = listOfBuildings;
     }
+
+    public void openZoo(){
+        setOpen(true);
+        System.out.println("The zoo is officially opened!");
+    }
+
+    public void closeZoo(){
+        setOpen(false);
+        System.out.println("The zoo is officially closed!");
+    }
+
 }

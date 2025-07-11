@@ -28,8 +28,8 @@ public class Main {
         zoo.setListOfBuildings(newListOfBuildings);
 
         // for demonstration purposes; adding Animals to enclosure
-        Lion simba = new Lion(true, "Simba,", felineEnclosure);
-        Lion mufasa = new Lion(true, "Mufasa,", felineEnclosure);
+        Lion simba = new Lion(true, "Simba", felineEnclosure);
+        Lion mufasa = new Lion(true, "Mufasa", felineEnclosure);
 
         ArrayList<Animal> newListOfAnimals = zoo.getListOfAnimals();
         newListOfAnimals.add(simba);
@@ -87,7 +87,10 @@ public class Main {
                     accessHandlerModule(s, zoo);
                     break;
                 case 3:
+                    zoo.openZoo();
+                    break;
                 case 4:
+                    zoo.closeZoo();
                     break;
                 case 5:
                     System.out.println("Goodbye!");
@@ -147,110 +150,99 @@ public class Main {
 
 
     // helper method for accessing handler module
-    private static void accessHandlerModule(Scanner scanner, Zoo zoo){
+    private static void accessHandlerModule(Scanner scanner, Zoo zoo) {
         List<Handlers> handlers = zoo.getListOfPeople().stream()
                 .filter(handler -> handler instanceof Handlers)
                 .map(handler -> (Handlers) handler)
                 .toList();
-        System.out.println(handlers.toString());
-        if(handlers.isEmpty()){
+        if (handlers.isEmpty()) {
             System.out.println("No Handlers yet.");
-        }else{
-            scanner.nextLine(); // removes
-            while(true){
+            return;
+        }
+        scanner.nextLine(); // removes leftover newline
+        firstWhileLoop:
+            while (true) {
                 System.out.print("Enter your name (Handler): ");
-
                 String handlerName = scanner.nextLine();
+                Handlers handler = handlers.stream()
+                        .filter(person -> person.getName().equals(handlerName))
+                        .findFirst()
+                        .orElse(null);
+                if (handler == null) {
+                    System.out.println(handlerName + " is not a handler.");
+                    continue;
+                }
+                System.out.println("Welcome, Handler " + handler.getName() + "!\n");
+                Enclosures location = handler.getLocation();
+                if (location == null) {
+                    System.out.println("Handler not in Enclosure.");
+                    continue;
+                }
 
-
-
-                if(handlers.toString().contains(handlerName)){
-                    Handlers handler = handlers.stream()
-                            .filter(person -> person.getName().equals(handlerName))
-                            .findFirst()
-                            .orElse(null);
-                    if (handler == null) {
-                        System.out.println(handlerName + " is not a handler.");
-                    }else {
-                        System.out.println("Welcome, Handler " + handler.getName() + "!\n");
-                        System.out.println("--- Animal Duty Menu ---");
-                        System.out.println("Animals assigned to you:");
-                        Enclosures location = handler.getLocation();
-                        int animalSelected;
-
-                        switch (location) {
-                            case PachydermsEnclosure pachydermsEnclosure:
-                                ArrayList<Pachyderms> pachydermsList = pachydermsEnclosure.getListOfPachyderms();
-                                for (int i = 0; i < pachydermsList.size(); i++) {
-                                    System.out.printf("%d. %s\n", i, pachydermsList.get(i).getName());
-                                }
-                                while(true){
-                                System.out.println("Choose Animal to interact with (0 to exit): ");
-                                animalSelected = scanner.nextInt();
-
-                                    if(animalSelected > pachydermsList.size() || animalSelected < 0){
-                                        System.out.println("Invalid choice. Please try again.");
-
-                                    } else if (animalSelected == 0) {
-                                        break;
-                                    } else {
-                                        Pachyderms pachydermSelected = pachydermsList.get(animalSelected);
-                                        System.out.println("Choose Action");
-                                        System.out.println("1. Feed " + pachydermSelected.getName());
-                                        System.out.println("2. Exercise + " + pachydermSelected.getName());
-                                        System.out.println("3. Examine Mufasa to Vet");
-                                        int choice = scanner.nextInt();
-
-                                        switch (choice) {
-                                            case 1:
-                                                pachydermSelected.eat();
-                                                break;
-                                            case 2:
-                                                pachydermSelected.roam();
-                                                break;
-                                            case 3:
-//                                                pachydermSelected.ex();
-                                                break;
-                                            default:
-                                                System.out.println("invalid input.");
-                                                break;
-                                        }
-                                    }
-                                }
-
-
-                                break;
-                            case FelinesEnclosure felinesEnclosure:
-                                ArrayList<Felines> felinesList = felinesEnclosure.getListOfFelines();
-                                for (int i = 0; i < felinesList.size(); i++) {
-                                    System.out.printf("%d. %s", i, felinesList.get(i).getName());
-                                }
-                                System.out.println("Choose Animal to interact with (0 to exit): ");
-                                animalSelected = scanner.nextInt();
-                                break;
-                            case BirdsEnclosure birdsEnclosure:
-                                ArrayList<Birds> birdsList = birdsEnclosure.getListOfBirds();
-                                for (int i = 0; i < birdsList.size(); i++) {
-                                    System.out.printf("%d. %s", i, birdsList.get(i).getName());
-                                }
-                                System.out.println("Choose Animal to interact with (0 to exit): ");
-                                animalSelected = scanner.nextInt();
-                                break;
-                            case null:
-                            default:
-                                System.out.println("Handler not in Enclosure.");
-                                break;
-                        }
-
-
-
+                    List<? extends Animal> animalList = null;
+                    String animalType = "";
+                    if (location instanceof PachydermsEnclosure pe) {
+                        animalList = pe.getListOfPachyderms();
+                        animalType = "Pachyderm";
+                    } else if (location instanceof FelinesEnclosure fe) {
+                        animalList = fe.getListOfFelines();
+                        animalType = "Feline";
+                    } else if (location instanceof BirdsEnclosure be) {
+                        animalList = be.getListOfBirds();
+                        animalType = "Bird";
+                    } else {
+                        System.out.println("Handler not in Enclosure.");
+                        continue;
                     }
 
-                }else{
-                    System.out.println(handlerName + " is not a handler.");
+                while (true) {
+                    System.out.println("--- Animal Duty Menu ---");
+                    for (int i = 0; i < animalList.size(); i++) {
+                        System.out.printf("%d. %s\n", i+1, animalList.get(i).getName());
+                    }
+                    System.out.println("Choose Animal to interact with (0 to exit): ");
+                    int animalSelected = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+
+                    if (animalSelected == 0) break firstWhileLoop;
+                    if (animalSelected < 0 || animalSelected > animalList.size()) {
+                        System.out.println("Invalid choice. Please try again.");
+                        continue;
+                    }
+                    Animal selected = animalList.get(animalSelected-1);
+                    System.out.println("1. Feed " + selected.getName());
+                    System.out.println("2. Exercise " + selected.getName());
+                    System.out.println("3. Examine " + selected.getName() + " to Vet");
+                    System.out.print("Choose Action: ");
+                    int choice = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+
+                    switch (choice) {
+                        case 1 -> selected.eat();
+                        case 2 -> selected.roam();
+                        case 3 -> {
+                            switch (selected) {
+                                case Pachyderms p:
+                                    p.examineToVet();
+                                    animalList.remove(p);
+                                    break;
+                                case Felines f:
+                                    f.examineToVet();
+                                    animalList.remove(f);
+                                    break;
+                                case Birds b:
+                                    b.examineToVet();
+                                    animalList.remove(b);
+                                    break;
+                                default:
+                                    System.out.println("Cannot examine this animal to vet.");
+
+                            }
+                        }
+                        default -> System.out.println("invalid input.");
+                    }
                 }
             }
-        }
     }
 
     // helper method for setting up Zoo Staff
