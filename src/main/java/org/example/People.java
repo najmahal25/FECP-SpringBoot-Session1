@@ -4,8 +4,16 @@ public abstract class People {
     private String name;
     private Building location;
 
+    People(String name){
+        this.name = name;
+    }
+
     public void goTo(Building destination){
 
+    }
+
+    public String toString(){
+        return name;
     }
 
     public String getName() {

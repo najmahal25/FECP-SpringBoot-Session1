@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Zoo {
     private boolean isOpen;
-    private ArrayList<People> listOfPeople;
-    private ArrayList<Animal> listOfAnimals;
-    private ArrayList<Building> listOfBuildings;
+    private ArrayList<People> listOfPeople = new ArrayList<>();
+    private ArrayList<Animal> listOfAnimals = new ArrayList<>();
+    private ArrayList<Building> listOfBuildings = new ArrayList<>();
 
     public boolean isOpen() {
         return isOpen;
