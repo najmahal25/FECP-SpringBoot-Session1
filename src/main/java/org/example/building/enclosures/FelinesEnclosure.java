@@ -5,8 +5,8 @@ import org.example.building.Enclosures;
 
 import java.util.ArrayList;
 
-public class FelinesEnclosure extends Enclosures {
-    ArrayList<Felines> listOfFelines = new ArrayList<>();
+public class FelinesEnclosure extends Enclosures{
+    private ArrayList<Felines> listOfFelines = new ArrayList<>();
 
     public FelinesEnclosure(String buildingName){
         super(buildingName);

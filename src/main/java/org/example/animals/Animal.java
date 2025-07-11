@@ -25,6 +25,19 @@ public abstract class Animal {
 
     }
 
+    public boolean isHealthy() {
+        return healthy;
+    }
 
+    public void setHealthy(boolean healthy) {
+        this.healthy = healthy;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
