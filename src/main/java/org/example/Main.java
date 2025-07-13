@@ -4,6 +4,7 @@ import org.example.animals.birds.Birds;
 import org.example.animals.felines.Felines;
 import org.example.animals.felines.Lion;
 import org.example.animals.pachyderms.Pachyderms;
+import org.example.modules.ZooModule;
 import org.example.people.*;
 import org.example.animals.*;
 import org.example.building.*;
@@ -43,11 +44,14 @@ public class Main {
 
         runAdminModule(zoo);
 //        runTicketingModule(); // check first if setup is finished and Zoo is open
+
     }
 
     // method to run Administrator module
     private static void runAdminModule(Zoo zoo) {
         Scanner s = new Scanner(System.in);
+        ZooModule zooModule = new ZooModule(zoo);
+
         System.out.println("=== Welcome to the Zoo Admin Console ===\n");
         System.out.println("Please log in.");
 
@@ -66,9 +70,7 @@ public class Main {
             }
         }
 
-        boolean runLoop = true;
         int choice = 0;
-
         while (choice != 5) {
             System.out.println("====== Zoo Admin Main Menu =====");
             System.out.println("1. Setup Zoo Staff");
@@ -88,6 +90,14 @@ public class Main {
                     break;
                 case 3:
                     zoo.openZoo();
+
+                    if (zoo.getListOfPeople().isEmpty()) {
+                        System.out.println("No staff assigned yet. Setup staff first.");
+                    } else {
+                        runTicketingModule(zoo);
+                        zooModule.run();
+                    }
+
                     break;
                 case 4:
                     zoo.closeZoo();
@@ -103,7 +113,7 @@ public class Main {
     }
 
     // method to run ticketing module
-    private static void runTicketingModule() {
+    private static void runTicketingModule(Zoo zoo) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== 🎟️WELCOME TO THE ZOO TICKET SHOP ===");
@@ -140,6 +150,10 @@ public class Main {
                         price,
                         "ZOO-" + (1000 + (int)(Math.random() * 9000) + 1000) // randomly generate ticket code
                 );
+
+                ArrayList<Ticket> newTickets = zoo.getTickets();
+                newTickets.add(ticket);
+                zoo.setTickets(newTickets);
 
                 System.out.println("\nTicket purchased!");
                 System.out.println("Your ticket code is: " + ticket.getCode());
@@ -253,7 +267,7 @@ public class Main {
         scanner.nextLine(); //consumes leftover newline character
         String managerName = scanner.nextLine();
 
-        System.out.print("\nEnter Veteinarian's name: ");
+        System.out.print("\nEnter Veterinarian's name: ");
         String veterinarianName = scanner.nextLine();
 
         System.out.print("\nEnter Handler for Pachyderm Enclosure: ");

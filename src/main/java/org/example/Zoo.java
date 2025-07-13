@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.animals.Animal;
 import org.example.building.Building;
+import org.example.building.Ticket;
 import org.example.people.People;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class Zoo {
     private ArrayList<People> listOfPeople = new ArrayList<>();
     private ArrayList<Animal> listOfAnimals = new ArrayList<>();
     private ArrayList<Building> listOfBuildings = new ArrayList<>();
+    private ArrayList<Ticket> tickets = new ArrayList<>();
 
     public boolean isOpen() {
         return isOpen;
@@ -44,6 +46,14 @@ public class Zoo {
         this.listOfBuildings = listOfBuildings;
     }
 
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(ArrayList<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     public void openZoo(){
         setOpen(true);
         System.out.println("The zoo is officially opened!");
@@ -53,5 +63,4 @@ public class Zoo {
         setOpen(false);
         System.out.println("The zoo is officially closed!");
     }
-
 }
