@@ -1,9 +1,11 @@
 package org.example.modules;
 
 import org.example.Zoo;
+import org.example.animals.Animal;
 import org.example.animals.birds.Birds;
 import org.example.animals.felines.Felines;
 import org.example.animals.pachyderms.Pachyderms;
+import org.example.building.Shops;
 import org.example.building.Ticket;
 
 import java.util.ArrayList;
@@ -36,25 +38,65 @@ public class ZooModule {
         return false;
     }
 
+    void displayZooEnclosureMenu() {
+        System.out.println("Choose enclosure: ");
+        System.out.println("1. Pachyderm");
+        System.out.println("2. Feline");
+        System.out.println("3. Birds");
+    }
+
     void visitZooEnclosure() {
-        ArrayList<Pachyderms> listOfPachyderms = this.zoo.getListOfAnimals()
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Animal> listOfPachyderms = this.zoo.getListOfAnimals()
                 .stream()
                 .filter(a -> a instanceof Pachyderms)
                 .map(a -> (Pachyderms) a)
                 .collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<Birds> listOfBirds = this.zoo.getListOfAnimals()
-                .stream()
-                .filter(a -> a instanceof Birds)
-                .map(a -> (Birds) a)
-                .collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<Felines> listOfFelines = this.zoo.getListOfAnimals()
+        ArrayList<Animal> listOfFelines = this.zoo.getListOfAnimals()
                 .stream()
                 .filter(a -> a instanceof Felines)
                 .map(a -> (Felines) a)
                 .collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Animal> listOfBirds = this.zoo.getListOfAnimals()
+                .stream()
+                .filter(a -> a instanceof Birds)
+                .map(a -> (Birds) a)
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        System.out.println("Choose enclosure: ");
+        displayZooEnclosureMenu();
+        System.out.print("Choose enclosure to visit: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
 
+        ArrayList<Animal> listOfAnimalsSelected = new ArrayList<>();
+
+        switch (choice) {
+            case 1:
+                listOfAnimalsSelected = listOfPachyderms;
+                break;
+            case 2:
+                listOfAnimalsSelected = listOfFelines;
+                break;
+            case 3:
+                listOfAnimalsSelected = listOfBirds;
+                break;
+            default:
+                System.out.println("Invalid option.");
+                return;
+        }
+
+        System.out.println("List of Animals:");
+        for (int i = 0; i < listOfAnimalsSelected.size(); i++) {
+            System.out.println(i + ". " + listOfAnimalsSelected.get(i).getName());
+        }
+
+        System.out.print("Select an animal to feed: ");
+        int animalToFeed = scanner.nextInt();
+        scanner.nextLine();
+
+        Animal selectedAnimal = listOfAnimalsSelected.get(animalToFeed);
+        selectedAnimal.eat();
+        selectedAnimal.roam();
     }
 
     void displayMenu() {
@@ -73,7 +115,12 @@ public class ZooModule {
 
             switch (choice) {
                 case 1:
+                    visitZooEnclosure();
+                    break;
                 case 2:
+                    Shops shop = new Shops("Shop");
+                    shop.run();
+                    break;
                 case 3:
                 case 4:
                     System.out.println("You have left the zoo.");

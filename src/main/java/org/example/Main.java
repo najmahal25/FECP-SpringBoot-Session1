@@ -42,10 +42,9 @@ public class Main {
         newFelineEnclosure.add(mufasa);
         felineEnclosure.setListOfFelines(newFelineEnclosure);
 
-//        runAdminModule(zoo);
+        runAdminModule(zoo);
 //        runTicketingModule(); // check first if setup is finished and Zoo is open
-        Shops shop = new Shops("Shop");
-        shop.run();
+
     }
 
     // method to run Administrator module
