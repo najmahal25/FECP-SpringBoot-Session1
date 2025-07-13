@@ -90,8 +90,14 @@ public class Main {
                     break;
                 case 3:
                     zoo.openZoo();
-                    runTicketingModule(zoo);
-                    zooModule.run();
+
+                    if (zoo.getListOfPeople().isEmpty()) {
+                        System.out.println("No staff assigned yet. Setup staff first.");
+                    } else {
+                        runTicketingModule(zoo);
+                        zooModule.run();
+                    }
+
                     break;
                 case 4:
                     zoo.closeZoo();
@@ -261,7 +267,7 @@ public class Main {
         scanner.nextLine(); //consumes leftover newline character
         String managerName = scanner.nextLine();
 
-        System.out.print("\nEnter Veteinarian's name: ");
+        System.out.print("\nEnter Veterinarian's name: ");
         String veterinarianName = scanner.nextLine();
 
         System.out.print("\nEnter Handler for Pachyderm Enclosure: ");

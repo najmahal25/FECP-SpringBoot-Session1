@@ -9,9 +9,10 @@ import org.example.building.Shops;
 import org.example.building.Ticket;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ZooModule {
     Zoo zoo;
@@ -99,6 +100,95 @@ public class ZooModule {
         selectedAnimal.roam();
     }
 
+    void displayHospitalMenu() {
+        System.out.println("=== Zoo Hospital Monitor ===");
+        System.out.println("1. View Sick Animals");
+        System.out.println("2. View Healed Animals");
+        System.out.println("3. Attend Science Lecture");
+        System.out.println("4. Heal Animals (Veterinarian)");
+        System.out.println("5. Exit");
+    }
+
+    void visitHospital() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Animal> listOfHealedAnimals = new ArrayList<>();
+        ArrayList<String> healingTimestamps = new ArrayList<>();
+        int choice = 0;
+
+        while (choice != 5) {
+            displayHospitalMenu();
+
+            System.out.print("Choose an option");
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    ArrayList<Animal> listOfSickAnimals = this.zoo.getListOfAnimals()
+                            .stream()
+                            .filter(a -> !a.isHealthy())
+                            .collect(Collectors.toCollection(ArrayList::new));
+
+                    System.out.println("Sick Animals Currently in Hospital: ");
+                    for (Animal a : listOfSickAnimals) {
+                        System.out.println(" - " + a.getName());
+                    }
+
+                    break;
+                case 2:
+                    if (listOfHealedAnimals.isEmpty() || healingTimestamps.isEmpty()) {
+                        System.out.println("There are no healed animals recently.");
+                        break;
+                    }
+
+                    System.out.println("Healed Animal With Timestamps:");
+                    for (int i = 0; i < listOfHealedAnimals.size(); i++) {
+                        Animal currentAnimal = listOfHealedAnimals.get(i);
+                        String currentTimestamp = healingTimestamps.get(i);
+
+                        System.out.println("- " + currentAnimal.getName() + "  (" + currentTimestamp + ")");
+                    }
+
+                    break;
+                case 3:
+                    ArrayList<Animal> listOfSickAnimalsToHeal = this.zoo.getListOfAnimals()
+                            .stream()
+                            .filter(a -> !a.isHealthy())
+                            .collect(Collectors.toCollection(ArrayList::new));
+                    String veterinarian = this.zoo.getListOfPeople().get(1).getName();
+
+                    if (listOfSickAnimalsToHeal.isEmpty()) {
+                        System.out.println("There are currently no sick animals.");
+                        break;
+                    }
+
+                    System.out.println(veterinarian + " begins healing sick animals...");
+                    for (Animal a : listOfSickAnimalsToHeal) {
+                        System.out.println("Healed: " + a.getName());
+                        System.out.println(a.getName() + " has been discharged and returned to enclosure.");
+
+                        a.setHealthy(true);
+                        listOfHealedAnimals.add(a);
+
+                        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                        healingTimestamps.add(now);
+                    }
+
+                    break;
+                case 4:
+                    String veterinarianToTeach = this.zoo.getListOfPeople().get(1).getName();
+                    System.out.println(veterinarianToTeach + " gives a science lecture on animal health and conservation.");
+                    break;
+                case 5:
+                    System.out.println("Exiting Zoo Vet Hospital. Good bye!");
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+                    break;
+            }
+        }
+    }
+
     void displayMenu() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What would you do?");
@@ -122,6 +212,8 @@ public class ZooModule {
                     shop.run();
                     break;
                 case 3:
+                    visitHospital();
+                    break;
                 case 4:
                     System.out.println("You have left the zoo.");
                     break;
